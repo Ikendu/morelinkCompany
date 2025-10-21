@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import { SiTiktok } from "react-icons/si";
 import { FiX } from "react-icons/fi";
+import { FiExternalLink } from "react-icons/fi";
 
 export default function Footer() {
   return (
@@ -60,6 +61,19 @@ export default function Footer() {
             >
               services@morelinks.com.ng
             </a>
+
+            <div className="mt-3">
+              <a
+                href="https://lodge.morelinks.com.ng"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-3 py-2 bg-white/6 hover:bg-white/10 rounded-md text-slate-200"
+                aria-label="Discover Morelink Lodge (external)"
+              >
+                <span>Discover Morelink Lodge</span>
+                <FiExternalLink aria-hidden className="w-4 h-4" />
+              </a>
+            </div>
 
             <div className="flex items-center gap-3 mt-3">
               <a
