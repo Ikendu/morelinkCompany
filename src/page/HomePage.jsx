@@ -11,7 +11,7 @@ export default function HomePage() {
           {/* Left: Text */}
           <div className="space-y-6">
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight">
-              Technology is life —
+              Linking Technologies
               <br />
               <span className="text-transparent bg-clip-text bg-linear-to-r from-cyan-300 via-blue-300 to-indigo-400">
                 MoreLinks to connect

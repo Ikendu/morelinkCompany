@@ -15,6 +15,7 @@ export default function Header() {
   const navigate = useNavigate();
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [logoSmall, setLogoSmall] = useState(false);
 
   const menuRef = useRef(null);
 
@@ -23,6 +24,26 @@ export default function Header() {
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // scroll direction: shrink logo when scrolling down, enlarge when scrolling up
+  useEffect(() => {
+    const lastY = { value: typeof window !== "undefined" ? window.scrollY : 0 };
+
+    function handleDir() {
+      const y = window.scrollY;
+      if (y > lastY.value && y > 20) {
+        // scrolling down
+        setLogoSmall(true);
+      } else {
+        // scrolling up or near top
+        setLogoSmall(false);
+      }
+      lastY.value = y;
+    }
+
+    window.addEventListener("scroll", handleDir, { passive: true });
+    return () => window.removeEventListener("scroll", handleDir);
   }, []);
 
   useEffect(() => {
@@ -68,9 +89,10 @@ export default function Header() {
             <img
               src={logo}
               alt="MoreLinks Tech logo"
-              className={`w-auto transition-all duration-300 ease-in-out ${
-                scrolled ? "h-8" : "h-12"
-              }`}
+              className={`transition-all duration-300 ease-in-out object-contain ${
+                logoSmall ? "h-8" : "h-16"
+              } max-h-16`}
+              style={{ width: "auto" }}
             />
           </button>
         </div>
@@ -110,7 +132,7 @@ export default function Header() {
         {/* right: mobile menu button */}
         <div className="flex justify-end items-center">
           <button
-            className="md:hidden p-2 rounded-md focus:outline-none"
+            className="md:hidden p-2 rounded-md focus:outline-none absolute right-3 top-1/2 -translate-y-1/2"
             onClick={() => setMenuOpen(!menuOpen)}
             aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
@@ -148,57 +170,57 @@ export default function Header() {
               <Link
                 onClick={() => setMenuOpen(false)}
                 to="/"
-                className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
+                className={`flex items-center justify-between px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
                   menuOpen
                     ? "opacity-100 translate-y-0 delay-75"
                     : "opacity-0 -translate-y-1"
                 }`}
               >
-                <FiHome aria-hidden className="w-4 h-4" />
                 <span>Home</span>
+                <FiHome aria-hidden="true" className="w-4 h-4 shrink-0" />
               </Link>
               <Link
                 onClick={() => setMenuOpen(false)}
                 to="/about"
-                className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
+                className={`flex items-center justify-between px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
                   menuOpen
                     ? "opacity-100 translate-y-0 delay-150"
                     : "opacity-0 -translate-y-1"
                 }`}
               >
-                <FiInfo aria-hidden className="w-4 h-4" />
                 <span>About</span>
+                <FiInfo aria-hidden="true" className="w-4 h-4 shrink-0" />
               </Link>
               <Link
                 onClick={() => setMenuOpen(false)}
                 to="/contact"
-                className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
+                className={`flex items-center justify-between px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
                   menuOpen
                     ? "opacity-100 translate-y-0 delay-200"
                     : "opacity-0 -translate-y-1"
                 }`}
               >
-                <FiPhone aria-hidden className="w-4 h-4" />
                 <span>Contact</span>
+                <FiPhone aria-hidden="true" className="w-4 h-4 shrink-0" />
               </Link>
               <Link
                 onClick={() => setMenuOpen(false)}
                 to="/privacy-policy"
-                className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
+                className={`flex items-center justify-between px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
                   menuOpen
                     ? "opacity-100 translate-y-0 delay-250"
                     : "opacity-0 -translate-y-1"
                 }`}
               >
-                <FiShield aria-hidden className="w-4 h-4" />
                 <span>Privacy</span>
+                <FiShield aria-hidden="true" className="w-4 h-4 shrink-0" />
               </Link>
               {/* external link in mobile menu */}
               <a
                 href="https://lodge.morelinks.com.ng"
                 target="_blank"
                 rel="noopener noreferrer"
-                className={`flex items-center gap-2 px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
+                className={`flex items-center justify-between px-3 py-2 rounded hover:bg-blue-600 transition transform duration-300 ${
                   menuOpen
                     ? "opacity-100 translate-y-0 delay-300"
                     : "opacity-0 -translate-y-1"
@@ -207,7 +229,10 @@ export default function Header() {
                 aria-label="Discover Morelink Lodge (external)"
               >
                 <span>Discover Morelink Lodge</span>
-                <FiExternalLink aria-hidden className="w-4 h-4" />
+                <FiExternalLink
+                  aria-hidden="true"
+                  className="w-4 h-4 shrink-0"
+                />
               </a>
             </div>
           </div>
